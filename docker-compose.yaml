@@ -1,0 +1,28 @@
+services:
+  db:
+    image: postgres:13.15
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: api
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  web:
+    build: .
+    environment:
+      - FLASK_APP=main.py
+      - FLASK_RUN_HOST=0.0.0.0
+      - DATABASE_HOST=db
+      - DATABASE_USERNAME=username
+      - DATABASE_PASSWORD=password
+      - DATABASE_DATABASE=api
+    ports:
+      - "8888:5000"
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
