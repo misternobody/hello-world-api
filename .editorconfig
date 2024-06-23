@@ -1,0 +1,7 @@
+[{Makefile,**.mk}]
+# Use tabs for indentation (Makefiles require tabs)
+indent_style = tab
+
+[*.{json,md,tpl,yaml,yml,py}]
+indent_style = space
+indent_size = 2
