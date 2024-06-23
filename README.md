@@ -1,5 +1,18 @@
 # Test API application
 
+## Notes
+
+CI&CD process is missed for the project. It should contain the following steps:
+
+- code linting
+- build Docker image
+- run unit tests
+- push Docker image
+- create and push Helm chart
+- deploy Helm chart to different environments
+- creation of required resources in AWS can be a part of the pipeline as well
+- etc.
+
 ## AWS system diagram
 
 ![](files/aws-architecture.png)
@@ -29,4 +42,17 @@ pip install -r requirements-tests.txt
 3. Run unit tests:
 ```shell
 python tests/unit.py
+```
+
+## Kubernetes deployment
+
+0. Go to the directory with the Helm chart.
+1. Set required variables in `values.yaml`.
+2. Run Helm installation for the required namespace of K8s cluster in dry-run mode:
+```shell
+helm upgrade --install -n my-api --dry-run -f values.yaml helm-api .
+```
+3. Analyse outputs and run the deployment if all good:
+```shell
+helm upgrade --install -n my-api -f values.yaml helm-api .
 ```

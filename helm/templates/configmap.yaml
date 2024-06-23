@@ -1,0 +1,21 @@
+{{- if (.Values.configMap).enabled }}
+{{- range $nameSuffix, $data := .Values.configMap.files }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "helm-api.name" $ }}-{{ $nameSuffix }}
+  namespace: {{ template "helm-api.namespace" $ }}
+  labels:
+  {{- include "helm-api.labels" $ | nindent 4 }}
+{{- if $.Values.configMap.additionalLabels }}
+{{ toYaml $.Values.configMap.additionalLabels | indent 4 }}
+{{- end }}
+{{- if $.Values.configMap.annotations }}
+  annotations:
+{{ toYaml $.Values.configMap.annotations | indent 4 }}
+{{- end }}
+data:
+{{ include "helm-api.tplvalues.render" ( dict "value" $data "context" $ ) | indent 2 }}
+{{- end }}
+{{- end }}
